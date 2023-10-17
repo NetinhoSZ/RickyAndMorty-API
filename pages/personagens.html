@@ -8,27 +8,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>TreinandoAPI</title>
 </head>
-<body class="bg-[url('/images/BG-RickyAndMorty.jpg')]">
-    <header class="bg-white w-[1920px] h-[104px] flex items-center justify-around">
+<body class="bg-[url('/images/BG-RickyAndMorty.jpg')] bg-cover">
+    <header class="bg-white 3xl:w-[1920px] 3xl:h-[104px] flex items-center justify-around">
         <img src="../images/Logo-RAM.png" alt="" width="90" height="90">
-            <ul class="flex gap-40 font-semibold cursor-pointer">
+            <ul class="flex gap-40 font-bold cursor-pointer">
                 <a href="../index.html">
-                    <li>
+                    <li class="hover:font-bold hover:text-emerald-600">
                         Episodios
                     </li>
                 </a>
                 <a href="./personagens.html">
-                    <li>
+                    <li class="hover:font-bold hover:text-emerald-600">
                         Personagens
                     </li>
                 </a>
                 <a href="./localizacoes.html">
-                    <li>
+                    <li class="hover:font-bold hover:text-emerald-600">
                         Localizações
                     </li>
                 </a>
             </ul>
         <img src="../images/Logo-RAM.png" alt="" width="90" height="90" class="">
     </header>
+    <section class="w-full h-full">
+        <div class="flex items-center justify-center mt-20">
+            <form class="flex flex-wrap items-center justify-center gap-10">
+                <input type="text" name="" id="" placeholder="Pesquisar" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600">
+                <select name="" id="" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2  hover:border-red-600 text-start">
+                    <option value="" disabled selected>Species</option>
+                    <option>oi</option>
+                </select>
+                <select name="" id="" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
+                    <option value="" disabled selected>Genero</option>
+                    <option>oi</option>
+                </select>
+                <select name="" id="" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
+                    <option value="" disabled selected>Status</option>
+                    <option>oi</option>
+                </select>
+            </form>
+        </div>
+    </section>
 </body>
 </html>

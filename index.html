@@ -8,40 +8,42 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>TreinandoAPI</title>
 </head>
-<body class="bg-[url('/images/BG-RickyAndMorty.jpg')] bg-cover no-repeat">
-    <header class="bg-white w-[1920px] h-[104px] flex items-center justify-around">
+<body class="bg-[url('/images/BG-RickyAndMorty.jpg')] bg-cover">
+    <header class="bg-white 3xl:w-[1920px] 3xl:h-[104px] flex items-center justify-around">
         <img src="../images/Logo-RAM.png" width="90" height="90">
-            <ul class="flex gap-40 font-semibold cursor-pointer">
+            <ul class="flex gap-40 font-bold cursor-pointer">
                 <a href="./index.html">
-                    <li>
+                    <li class="hover:font-bold hover:text-emerald-600">
                         Episodios
                     </li>
                 </a>
                 <a href="./pages/personagens.html">
-                    <li>
+                    <li class="hover:font-bold hover:text-emerald-600">
                         Personagens
                     </li>
                 </a>
                 <a href="./pages/localizacoes.html">
-                    <li>
+                    <li class="hover:font-bold hover:text-emerald-600">
                         Localizações
                     </li>
                 </a>
             </ul>
         <img src="../images/Logo-RAM.png" width="90" height="90" class="">
     </header>
-    <div class="flex items-center justify-center mt-40" id="container">
-        <div class="w-[304px] h-[304px] absolute bg-white rounded-[10px]  mt-40" id="card-episode">
-            <div class="w-[304px] h-[304px] w-2/4">
-                <img src="../images/Image-RickyAndMorty.jpg" class="rounded-tl-[10px] rounded-tr-[10px]">
-            </div>
-            <div class="relative -top-[134px] flex flex-col items-center justify-center">
-                <h1 class="text-[30px] font-bold">
-                    Name: Pilot
-                </h1>
-                <h2 class="text-[30px] font-bold">
-                    Episode: S01E01
-                </h2>
+    <div id="div">
+        <div class="flex flex-wrap items-center justify-center mt-40 " id="container">
+            <div class="w-[304px] h-[304px] absolute bg-white rounded-[10px] mt-40" id="card-episode">
+                <div class="w-[304px] h-[304px]">
+                    <img src="../images/Image-RickyAndMorty.jpg" class="rounded-tl-[10px] rounded-tr-[10px]">
+                </div>
+                <div class="relative -top-[134px] flex flex-col items-center justify-center">
+                    <h1 class="text-[30px] font-bold">
+                        Name: Pilot
+                    </h1>
+                    <h2 class="text-[30px] font-bold">
+                        Episode: S01E01
+                    </h2>
+                </div>
             </div>
         </div>
     </div>
