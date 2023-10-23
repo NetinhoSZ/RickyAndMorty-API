@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="./script.js" defer></script>
+    <script src="../script.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>TreinandoAPI</title>
 </head>
@@ -33,20 +32,39 @@
     <section class="w-full h-full">
         <div class="flex items-center justify-center mt-20">
             <form class="flex flex-wrap items-center justify-center gap-10">
-                <input type="text" name="" id="" placeholder="Pesquisar" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600">
-                <select name="" id="" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2  hover:border-red-600 text-start">
-                    <option value="" disabled selected>Species</option>
-                    <option>oi</option>
+                <input type="text" name="" id="search" placeholder="Pesquisar" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600">
+                <select name="" id="species" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2  hover:border-red-600 text-start">
+                    <option value="" >Species</option>
+                    <option value="animal" >Animal</option>
+                    <option value="alien" >Alien</option>
+                    <option value="disease" >Doença</option>
+                    <option value="unknown" >Desconhecido</option>
+                    <option value="human" >Humano</option>
+                    <option value="humanoid" >Humanoide</option>
+                    <option value="mythological" >Mitologico</option>
+                    <option value="poopybutthole" >PoopyButthole</option>
+                    <option value="robot" >Robo</option>
                 </select>
-                <select name="" id="" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
-                    <option value="" disabled selected>Genero</option>
-                    <option>oi</option>
+                <select name="" id="gender" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
+                    <option value="" >Genero</option>
+                    <option value="female" >Feminino</option>
+                    <option value="male" >Masculino</option>
+                    <option value="genderless" >Sem Genero</option>
+                    <option value="unknown" >Desconhecido</option>
                 </select>
-                <select name="" id="" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
-                    <option value="" disabled selected>Status</option>
-                    <option>oi</option>
+                <select name="" id="status" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
+                    <option value="" >Status</option>
+                    <option value="alive" >Vivo</option>
+                    <option value="dead" >Morto</option>
+                    <option value="unknown" >Desconhecido</option>
                 </select>
             </form>
+        </div>
+        <div class="flex flex-wrap items-center justify-center mt-20 gap-10" id="chars-container">
+            
+        </div>
+        <div class="w-full h-full flex flex-col items-center justify-center mt-[50px] mb-[50px]">
+            <button id="load-more" class="bg-white text-black text-lg font-semibold py-2 px-4 rounded-md">Carregar mais</button>
         </div>
     </section>
 </body>
