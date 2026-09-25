@@ -5,27 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../script.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>TreinandoAPI</title>
+    <title>Rick and Morty</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Outfit', system-ui, sans-serif; }</style>
 </head>
 <body class="bg-[url('/images/BG-RickyAndMorty.jpg')] bg-cover">
-    <header class="bg-white 3xl:w-[1920px] 3xl:h-[104px] flex items-center justify-around">
-        <img src="../images/Logo-RAM.png" alt="" width="90" height="90">
-            <ul class="flex gap-40 font-bold cursor-pointer">
-                <a href="../index.html">
-                    <li class="hover:font-bold hover:text-emerald-600">
-                        Episodios
-                    </li>
-                </a>
-                <a href="./personagens.html">
-                    <li class="hover:font-bold hover:text-emerald-600">
-                        Personagens
-                    </li>
-                </a>
-            </ul>
-        <img src="../images/Logo-RAM.png" alt="" width="90" height="90" class="">
+    <a href="#conteudo" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:font-medium focus:text-emerald-700 focus:shadow-lg">Pular para o conteúdo</a>
+    <header class="sticky top-0 z-40 border-b border-emerald-900/10 bg-white shadow-[0_8px_24px_-16px_rgba(6,78,59,0.35)]">
+        <div class="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-6">
+            <a href="../index.html" class="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60">
+                <img src="../images/Logo-RAM.png" alt="Logo de Rick and Morty" width="44" height="44" class="h-11 w-11 object-contain">
+                <span class="hidden text-lg font-semibold tracking-tight text-zinc-900 sm:inline">Rick and Morty</span>
+            </a>
+            <nav aria-label="Principal">
+                <ul class="flex items-center gap-6 md:gap-10">
+                    <li><a href="../index.html" class="relative py-2 text-[15px] font-medium tracking-tight rounded transition-colors duration-200 active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:bg-emerald-600 after:transition-transform after:duration-300 text-zinc-600 hover:text-emerald-700 after:scale-x-0 hover:after:scale-x-100">Episódios</a></li>
+                    <li><a href="./personagens.html" aria-current="page" class="relative py-2 text-[15px] font-medium tracking-tight rounded transition-colors duration-200 active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:origin-left after:bg-emerald-600 after:transition-transform after:duration-300 text-emerald-700 after:scale-x-100">Personagens</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <section class="w-full h-full">
-        <div class="flex items-center justify-center mt-20 px-4">
+    <main id="conteudo" class="w-full">
+        <div class="relative z-30 flex items-center justify-center mt-20 px-4">
             <form class="flex flex-wrap items-center justify-center gap-4 bg-white/95 backdrop-blur-sm rounded-2xl shadow-[0_8px_24px_-10px_rgba(0,0,0,0.35)] px-6 py-5">
                 <input type="text" name="" id="search" placeholder="Pesquisar" class="w-[200px] px-3 py-2 rounded-lg border border-zinc-300 outline-none transition-colors hover:border-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
                 <select name="" id="species" class="w-[200px] px-3 py-2 rounded-lg border border-zinc-300 outline-none text-start transition-colors hover:border-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
@@ -61,6 +64,6 @@
         <div class="w-full h-full flex flex-col items-center justify-center mt-[50px] mb-[50px]">
             <button id="load-more" class="bg-white text-black text-lg font-semibold py-2 px-4 rounded-md">Carregar mais</button>
         </div>
-    </section>
+    </main>
 </body>
 </html>

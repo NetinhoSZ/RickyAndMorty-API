@@ -6,6 +6,8 @@ const statusFilter = document.querySelector("#status");
 const loadMoreButton = document.querySelector("#load-more"); 
 
 const epContainer = document.querySelector("#ep-container");
+const seasonFilter = document.querySelector("#season");
+const episodeFilter = document.querySelector("#episode");
 
 const api = "https://rickandmortyapi.com/api"; 
 
@@ -51,9 +53,17 @@ async function getEpisodes({name, episode, page = 1 }) {
 
     const episodes = await response.json();
 
-    console.log(episodes.results)
+    return episodes;
+}
 
-    return episodes.results;
+async function getAllEpisodes() {
+    // Pega o total de episódios e busca todos de uma vez pelos ids, sem depender da paginação
+    const { info } = await getEpisodes(filter);
+    const ids = Array.from({ length: info.count }, (_, i) => i + 1).join(',');
+    const response = await fetch(`${api}/episode/${ids}`);
+    const episodes = await response.json();
+
+    return [].concat(episodes).sort((a, b) => a.id - b.id);
 }
 
 
@@ -110,20 +120,80 @@ async function render({characters = [], episodes = []}) {
 
     });
 
-    episodes.map((episode) => {
+    if (epContainer) initEpisodeFilters(episodes);
+}
 
-        return epContainer.innerHTML += `
-        <div class="w-[304px] h-[304px] absolute bg-white rounded-[10px] mt-40" id="card-episode">
-            <div class="relative -top-[134px] flex flex-col items-center justify-center">
-                <h1 class="text-[30px] font-bold">
-                    ${episode.name}
-                </h1>
-                <h2 class="text-[30px] font-bold">
-                    ${episode.episode}
-                </h2>
+let allEpisodes = [];
+
+function seasonOf(episode) {
+    return Number(episode.episode.slice(1, 3));
+}
+
+function initEpisodeFilters(episodes) {
+    allEpisodes = episodes;
+
+    const seasons = [...new Set(episodes.map(seasonOf))];
+    seasonFilter.innerHTML = seasons.map((season) => `<option value="${season}">Temporada ${season}</option>`).join('');
+
+    seasonFilter.addEventListener('change', () => selectSeason(Number(seasonFilter.value)));
+    episodeFilter.addEventListener('change', () => showEpisodes(Number(seasonFilter.value), episodeFilter.value));
+
+    selectSeason(seasons[0]);
+}
+
+function selectSeason(season) {
+    const list = allEpisodes.filter((episode) => seasonOf(episode) === season);
+
+    episodeFilter.innerHTML = '<option value="">Todos os episódios</option>'
+        + list.map((episode) => `<option value="${episode.episode}">${episode.episode} - ${episode.name}</option>`).join('');
+
+    showEpisodes(season, '');
+}
+
+function showEpisodes(season, code) {
+    const list = allEpisodes.filter((episode) => seasonOf(episode) === season && (!code || episode.episode === code));
+
+    epContainer.innerHTML = list.map(episodeCard).join('');
+}
+
+function episodeCard(episode) {
+    const summary = (typeof EPISODE_SUMMARIES !== 'undefined' && EPISODE_SUMMARIES[episode.episode])
+        || 'Resumo ainda não disponível.';
+    // Imagem do episódio: avatar de um dos personagens que aparecem nele
+    const characterId = episode.characters[episode.characters.length - 1].split('/').pop();
+
+    return `
+        <div class="bg-white p-2 rounded-lg w-[300px] h-[490px] flex flex-col">
+            <img src="${api}/character/avatar/${characterId}.jpeg" alt="${episode.name}" loading="lazy" class="rounded-lg mb-2 w-full h-[200px] object-cover">
+            <div class="char-info">
+                <h3 class="text-[20px] font-bold pb-[2px] leading-tight line-clamp-2 min-h-[50px]">${episode.name}</h3>
+                <span class="text-[20px] block">${episode.episode}</span>
+                <span class="text-[16px] block">${episode.air_date}</span>
+            </div>
+            <div class="mt-auto">
+                <button type="button" data-toggle class="w-full flex items-center justify-between font-semibold hover:text-emerald-600">
+                    <span>Resumo</span>
+                    <span class="chevron transition-transform duration-300">▼</span>
+                </button>
+                <div class="dropdown grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
+                    <div class="overflow-hidden">
+                        <p class="mt-1 text-[15px] max-h-[120px] overflow-y-auto">${summary}</p>
+                    </div>
+                </div>
             </div>
         </div>
-        `
+    `;
+}
+
+function addDropdownListener() {
+    epContainer.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-toggle]');
+        if (!button) return;
+
+        const panel = button.nextElementSibling;
+        const open = panel.classList.toggle('grid-rows-[1fr]');
+        panel.classList.toggle('grid-rows-[0fr]', !open);
+        button.querySelector('.chevron').classList.toggle('rotate-180', open);
     });
 }
 
@@ -163,13 +233,82 @@ function addListeners() {
     loadMoreButton.addEventListener('click', handleLoadMore)
 }
 
+// Dropdown customizado no lugar do <select> nativo, para poder animar a abertura e o fechamento.
+// O <select> original continua no DOM (escondido) e dispara "change" normalmente.
+function enhanceSelect(select) {
+    const width = select.className.match(/w-\[\d+px\]/)?.[0] ?? 'w-[200px]';
+    const wrapper = document.createElement('div');
+    wrapper.className = `relative ${width}`;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border border-zinc-300 bg-white outline-none text-start transition-colors hover:border-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30';
+    button.innerHTML = '<span class="label truncate"></span><span class="chevron text-xs transition-transform duration-300">▼</span>';
+
+    const panel = document.createElement('div');
+    panel.className = 'absolute z-20 left-0 right-0 top-full mt-1 grid grid-rows-[0fr] opacity-0 pointer-events-none transition-[grid-template-rows,opacity] duration-300 ease-in-out';
+    panel.innerHTML = '<div class="overflow-hidden"><ul class="options max-h-60 overflow-y-auto bg-white rounded-lg border border-zinc-200 shadow-[0_8px_24px_-10px_rgba(0,0,0,0.35)] py-1"></ul></div>';
+
+    wrapper.append(button, panel);
+    select.classList.add('hidden');
+    select.after(wrapper);
+
+    const list = panel.querySelector('.options');
+    const label = button.querySelector('.label');
+    const chevron = button.querySelector('.chevron');
+
+    function setOpen(open) {
+        panel.classList.toggle('grid-rows-[1fr]', open);
+        panel.classList.toggle('grid-rows-[0fr]', !open);
+        panel.classList.toggle('opacity-100', open);
+        panel.classList.toggle('opacity-0', !open);
+        panel.classList.toggle('pointer-events-auto', open);
+        panel.classList.toggle('pointer-events-none', !open);
+        chevron.classList.toggle('rotate-180', open);
+    }
+
+    function sync() {
+        label.textContent = select.selectedOptions[0]?.textContent ?? '';
+        list.innerHTML = '';
+        [...select.options].forEach((option) => {
+            const item = document.createElement('li');
+            const selected = option.value === select.value;
+            item.textContent = option.textContent;
+            item.className = `px-3 py-2 cursor-pointer transition-colors hover:bg-emerald-50 ${selected ? 'font-semibold text-emerald-600' : ''}`;
+            item.addEventListener('click', () => {
+                select.value = option.value;
+                select.dispatchEvent(new Event('change'));
+                sync();
+                setOpen(false);
+            });
+            list.appendChild(item);
+        });
+    }
+
+    button.addEventListener('click', () => setOpen(!panel.classList.contains('opacity-100')));
+    document.addEventListener('click', (event) => { if (!wrapper.contains(event.target)) setOpen(false); });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setOpen(false); });
+    new MutationObserver(sync).observe(select, { childList: true });
+
+    sync();
+}
 async function main() {
 
-    const characters = await getCharacters(defaultFilters);
-    const episodes = await getEpisodes(filter)
-    addListeners();
-    render({ characters, episodes });
-    
+    document.querySelectorAll("select").forEach(enhanceSelect);
+
+
+    if (charsContainer) {
+        const characters = await getCharacters(defaultFilters);
+        addListeners();
+        render({ characters });
+    }
+
+    if (epContainer) {
+        addDropdownListener();
+        const episodes = await getAllEpisodes();
+        render({ episodes });
+    }
+
 
 }
 
