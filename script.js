@@ -45,15 +45,53 @@ async function getEpisodes({name, episode, page = 1 }) {
 }
 
 
+const statusLabel = {
+    alive: 'Vivo',
+    dead: 'Morto',
+    unknown: 'Desconhecido'
+}
+
+const statusDot = {
+    alive: 'bg-emerald-500',
+    dead: 'bg-red-500',
+    unknown: 'bg-zinc-400'
+}
+
+const genderLabel = {
+    male: 'Masculino',
+    female: 'Feminino',
+    genderless: 'Sem gênero',
+    unknown: 'Desconhecido'
+}
+
+const pinIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 shrink-0 text-emerald-600"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.847 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>`
+
 async function render({characters, episodes}) {
     characters.map((character) => {
-        
+
+        const status = (character.status || '').toLowerCase();
+        const alive = status === 'alive';
+
         return charsContainer.innerHTML += `
-            <div class="bg-white p-2 rounded-lg">
-                <img src="${character.image}" alt="" class="rounded-lg pb-2">
-                <div class="char-info">
-                    <h3 class="text-[20px] font-bold pb-[2px]">${character.name}</h3>
-                    <span class="text-[20px]">${character.species}</span>
+            <div class="group w-[260px] bg-white rounded-2xl shadow-[0_8px_24px_-10px_rgba(16,185,129,0.35)] overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_-10px_rgba(16,185,129,0.45)]">
+                <div class="relative overflow-hidden">
+                    <img src="${character.image}" alt="${character.name}" class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105">
+                </div>
+                <div class="char-info p-4">
+                    <h3 class="text-lg font-bold leading-tight truncate">${character.name}</h3>
+                    <p class="text-sm text-zinc-500 pb-1">${character.species}${character.type ? ` (${character.type})` : ''} · ${genderLabel[character.gender] ?? character.gender}</p>
+                    <p class="flex items-center gap-1.5 text-xs font-medium pb-3 ${alive ? 'text-emerald-600' : 'text-zinc-500'}">
+                        <span class="relative flex h-2 w-2">
+                            ${alive ? '<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>' : ''}
+                            <span class="relative inline-flex h-2 w-2 rounded-full ${statusDot[status] ?? 'bg-zinc-400'}"></span>
+                        </span>
+                        ${statusLabel[status] ?? character.status}
+                    </p>
+
+                    <div class="space-y-1.5 text-xs text-zinc-600 border-t border-zinc-100 pt-3">
+                        <p class="flex items-center gap-1.5">${pinIcon}<span><span class="font-semibold text-zinc-800">Atual:</span> ${character.location?.name || 'Desconhecida'}</span></p>
+                        <p class="flex items-center gap-1.5">${pinIcon}<span><span class="font-semibold text-zinc-800">Origem:</span> ${character.origin?.name || 'Desconhecida'}</span></p>
+                    </div>
                 </div>
             </div>
         `

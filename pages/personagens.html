@@ -21,19 +21,14 @@
                         Personagens
                     </li>
                 </a>
-                <a href="./localizacoes.html">
-                    <li class="hover:font-bold hover:text-emerald-600">
-                        Localizações
-                    </li>
-                </a>
             </ul>
         <img src="../images/Logo-RAM.png" alt="" width="90" height="90" class="">
     </header>
     <section class="w-full h-full">
-        <div class="flex items-center justify-center mt-20">
-            <form class="flex flex-wrap items-center justify-center gap-10">
-                <input type="text" name="" id="search" placeholder="Pesquisar" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600">
-                <select name="" id="species" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2  hover:border-red-600 text-start">
+        <div class="flex items-center justify-center mt-20 px-4">
+            <form class="flex flex-wrap items-center justify-center gap-4 bg-white/95 backdrop-blur-sm rounded-2xl shadow-[0_8px_24px_-10px_rgba(0,0,0,0.35)] px-6 py-5">
+                <input type="text" name="" id="search" placeholder="Pesquisar" class="w-[200px] px-3 py-2 rounded-lg border border-zinc-300 outline-none transition-colors hover:border-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
+                <select name="" id="species" class="w-[200px] px-3 py-2 rounded-lg border border-zinc-300 outline-none text-start transition-colors hover:border-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
                     <option value="" >Species</option>
                     <option value="animal" >Animal</option>
                     <option value="alien" >Alien</option>
@@ -45,14 +40,14 @@
                     <option value="poopybutthole" >PoopyButthole</option>
                     <option value="robot" >Robo</option>
                 </select>
-                <select name="" id="gender" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
+                <select name="" id="gender" class="w-[200px] px-3 py-2 rounded-lg border border-zinc-300 outline-none text-start transition-colors hover:border-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
                     <option value="" >Genero</option>
                     <option value="female" >Feminino</option>
                     <option value="male" >Masculino</option>
                     <option value="genderless" >Sem Genero</option>
                     <option value="unknown" >Desconhecido</option>
                 </select>
-                <select name="" id="status" class="w-[200px] p-1 rounded-md border-2 border-solid border-black hover:border-2 hover:border-red-600 text-start">
+                <select name="" id="status" class="w-[200px] px-3 py-2 rounded-lg border border-zinc-300 outline-none text-start transition-colors hover:border-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
                     <option value="" >Status</option>
                     <option value="alive" >Vivo</option>
                     <option value="dead" >Morto</option>
@@ -60,8 +55,8 @@
                 </select>
             </form>
         </div>
-        <div class="flex flex-wrap items-center justify-center mt-20 gap-10" id="chars-container">
-            
+        <div class="flex flex-wrap items-stretch justify-center mt-20 gap-10" id="chars-container">
+
         </div>
         <div class="w-full h-full flex flex-col items-center justify-center mt-[50px] mb-[50px]">
             <button id="load-more" class="bg-white text-black text-lg font-semibold py-2 px-4 rounded-md">Carregar mais</button>
