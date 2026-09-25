@@ -24,15 +24,27 @@ const filter = {
     page: 1
 }
 
+const CHARACTERS_PER_LOAD = 40;
+const PAGE_SIZE = 20;
+const PAGES_PER_LOAD = CHARACTERS_PER_LOAD / PAGE_SIZE;
+
 async function getCharacters({name, species, gender, status, page = 1}) {
-    const response = await fetch(`${api}/character?name=${name}&species=${species}&gender=${gender}&status=${status}&page=${page}`); 
+    const pages = await Promise.all(
+        Array.from({ length: PAGES_PER_LOAD }, (_, i) =>
+            fetch(`${api}/character?name=${name}&species=${species}&gender=${gender}&status=${status}&page=${page + i}`)
+        )
+    );
 
-    const characters = await response.json(); 
+    const results = await Promise.all(
+        pages.map(async (response) => response.ok ? (await response.json()).results ?? [] : [])
+    );
 
-    console.log(characters.results)
+    const characters = results.flat();
 
-    return characters.results;
-} 
+    console.log(characters)
+
+    return characters;
+}
 
 async function getEpisodes({name, episode, page = 1 }) {
     const response = await fetch(`${api}/episode?name=${name}&episode=${episode}&page=${page}`);
@@ -66,7 +78,7 @@ const genderLabel = {
 
 const pinIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5 shrink-0 text-emerald-600"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.847 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>`
 
-async function render({characters, episodes}) {
+async function render({characters = [], episodes = []}) {
     characters.map((character) => {
 
         const status = (character.status || '').toLowerCase();
@@ -125,9 +137,9 @@ function handleFilterChange(type, event){
 } 
 
 async function handleLoadMore() {
-    defaultFilters.page += 1
+    defaultFilters.page += PAGES_PER_LOAD
     const characters = await getCharacters(defaultFilters)
-    render({ characters })   
+    render({ characters })
 }
 
 function addListeners() {
